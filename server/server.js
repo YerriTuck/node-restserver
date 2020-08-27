@@ -1,32 +1,18 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const app = express();
 const bodyParser = require('body-parser');
+
 require('./config/config');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(require('./routes/usuario'));
 
-app.get('/', (req, res) => {
-    //res.send('Hello World');
-    res.json('Hello World');
-});
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }, (err, res) => {
+    if (err) throw err;
 
-app.get('/usuario', (req, res) => {
-    res.json('get Usuario');
-});
-
-app.post('/usuario', (req, res) => {
-    let body = req.body;
-    res.json({
-        body
-    });
-});
-
-app.put('/usuario/:id', (req, res) => {
-    let id = req.params.id;
-    res.json({
-        id
-    });
+    console.log(('Base de datos online'));
 });
 
 app.listen(process.env.PORT, () => {
